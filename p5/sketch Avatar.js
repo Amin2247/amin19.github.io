@@ -1,0 +1,146 @@
+let AngleWag;
+let miclevel;
+let mic;
+let a;
+let b;
+let direction;
+let dist = 10;
+
+function setup() {
+  createCanvas(400, 400);
+  colorMode(RGB, width);
+  a = 0;
+  b = width;
+  direction = true;  
+    
+  frameRate(30);
+  angleMode(DEGREES);
+  mic = new p5.AudioIn()
+  mic.start();
+  
+}
+
+function draw() {
+  console.log("mic level" + mic.getLevel());
+  //AngleWag = mic.getLevel();
+  AngleWag = map(mic.getLevel(),0,.5,345,369);
+  background(300,100,100);
+
+  background1 = new MoveBackground(dist);
+  background2 = new MoveBackground(dist+5);
+  background1.display();
+  background2.display();
+  dist = dist + 3; 
+  if(dist > 400){
+    dist = 0;
+  }
+  //console.log("dist = " + dist);
+  red = red +5;
+  drawhead();
+  drawcollarandtorso()
+  drawbone();
+  tail(AngleWag);
+
+if ((mouseX <= 100) && (mouseY <= 300)) {
+rect(0, 0, 100, 100);
+}
+else if ((mouseX <= 100) && (mouseY > 300)) {
+rect(0, 400, 100, 100);
+}
+else if ((mouseX > 100) && (mouseY <= 300)) {
+rect(300, 0,100 , 100);
+}
+else {
+rect(300, 400, 100,100);
+}
+a++;
+if (a > width) {
+a = 0;
+direction = !direction;
+}
+if (direction === true) {
+stroke(a);
+} else {
+stroke(width - a);
+}
+line(a, 0, a, height / 2);
+
+b--;
+if (b < 0) {
+b = width;
+}
+if (direction == true) {
+stroke(width - b);
+} else {
+stroke(b);
+}
+line(b, height / 2 + 1, b, height);
+}
+function drawbone(){
+  fill('#222222')
+  circle(25, 190, 25);
+  rect(20,190,110,35,10);
+  circle(25, 230, 25);
+}
+function drawhead() {
+  noStroke()
+  fill(255, 157, 0)
+  circle(200, 130, 180);
+  curveVertex(100, 200)
+  ellipse(100, 135, 195, 95);
+  ellipse(200, 305, 165, 195);
+  fill(20)
+  circle(205, 85, 40);
+  circle(155, 84, 40);
+  ellipse(30, 135, 45, 55);
+  fill(5, 157, 0)
+  rect(155, 200, 90, 20);
+  stroke('#122222');
+  strokeWeight(5);
+  noFill();
+}
+function tail(){
+  beginShape();
+  //push();
+  //fill(255,153,0);
+  strokeWeight(1);
+  fill(255, 204, 0);
+  vertex(width * .5, height * .9); 
+  vertex(width * .6, height * .7);
+  vertex(width * .5, height * .9);
+  vertex(width * .5, height * .9);
+  vertex(width * .6, height * .9);
+  vertex(width * .6, height * .35);
+  vertex(width * .6, height * .5);
+  rotate(0 + AngleWag);
+  push();
+  //translate(width*0.225, height*1.6); 
+  translate(width*0.4, height*.6);
+  pop();
+  endShape(CLOSE);
+}
+function drawcollarandtorso(){
+  rect(230, 62, 35, 70);
+  noStroke()
+  fill(255, 157, 0)
+  circle(200, 130, 180);
+  curveVertex(100, 200)
+  ellipse(100, 135, 195, 95);
+  ellipse(200, 305, 165, 195);
+  fill(20);
+  circle(205, 85, 40);
+  circle(155, 84, 40);
+  ellipse(30, 135, 45, 55);
+  fill(5, 157, 0)
+  rect(155, 200, 90, 20);
+  stroke('#122222');
+  strokeWeight(5);
+  noFill();
+  //rect(232, 62, 35, 70);
+  // draw ear
+  strokeWeight(1);
+  fill(255, 204, 0);
+  ellipse(250, 102, 55, 75);
+  fill(255, 255, 255)
+}
+
